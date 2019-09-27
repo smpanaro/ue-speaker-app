@@ -13,6 +13,9 @@
 		DCC146A6233C56190030B228 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC146A4233C56190030B228 /* Main.storyboard */; };
 		DCC146A8233C561B0030B228 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC146A7233C561B0030B228 /* Assets.xcassets */; };
 		DCC146AB233C561B0030B228 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC146A9233C561B0030B228 /* LaunchScreen.storyboard */; };
+		DCC146B4233C563A0030B228 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC146B3233C563A0030B228 /* CoreBluetooth.framework */; };
+		DCD9859F233D90D400F2DE1B /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCD9859E233D90D400F2DE1B /* ExternalAccessory.framework */; };
+		DCD985A1233DD10700F2DE1B /* AccessoryChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		DCC146A7233C561B0030B228 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCC146AA233C561B0030B228 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCC146AC233C561B0030B228 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCC146B3233C563A0030B228 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		DCD9859E233D90D400F2DE1B /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccessoryChannel.swift; path = "ue-roll-control/AccessoryChannel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +37,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCD9859F233D90D400F2DE1B /* ExternalAccessory.framework in Frameworks */,
+				DCC146B4233C563A0030B228 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +48,10 @@
 		DCC14692233C56190030B228 = {
 			isa = PBXGroup;
 			children = (
+				DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */,
 				DCC1469D233C56190030B228 /* ue-roll-control */,
 				DCC1469C233C56190030B228 /* Products */,
+				DCC146B2233C56390030B228 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +75,15 @@
 				DCC146AC233C561B0030B228 /* Info.plist */,
 			);
 			path = "ue-roll-control";
+			sourceTree = "<group>";
+		};
+		DCC146B2233C56390030B228 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCD9859E233D90D400F2DE1B /* ExternalAccessory.framework */,
+				DCC146B3233C563A0030B228 /* CoreBluetooth.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +159,7 @@
 			files = (
 				DCC146A3233C56190030B228 /* ViewController.swift in Sources */,
 				DCC1469F233C56190030B228 /* AppDelegate.swift in Sources */,
+				DCD985A1233DD10700F2DE1B /* AccessoryChannel.swift in Sources */,
 				DCC146A1233C56190030B228 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

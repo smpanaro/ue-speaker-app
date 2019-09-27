@@ -60,5 +60,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Connect to the UE Roll.</string>
+	<key> NSBluetoothPeripheralUsageDescription</key>
+	<string>Connect to the UE Roll.</string>
+	<key>UISupportedExternalAccessoryProtocols</key>
+	<array>
+		<string>com.logitech.ue.ueroll</string>
+	</array>
 </dict>
 </plist>
