@@ -9,18 +9,24 @@
 import Foundation
 import ExternalAccessory
 
+protocol AccessoryChannelDelegate {
+    func didReceive(data: Data)
+}
 
 class AccessoryChannel: NSObject {
 
     let session: EASession
-    let queue: DispatchQueue
+    private var delegate: AccessoryChannelDelegate?
 
-    var isConfigured: Bool = false
-    var writeBuffer = Data(capacity: 0)
+    private let queue: DispatchQueue
 
-    init(session: EASession) {
+    private var isConfigured: Bool = false
+    private var writeBuffer = Data(capacity: 0)
+
+    init(session: EASession, delegate: AccessoryChannelDelegate) {
         self.session = session
         self.queue = DispatchQueue(label: "com.hedgemereapps.accessory-channel-queue", qos: .default, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+        self.delegate = delegate
         super.init()
     }
 
@@ -48,7 +54,8 @@ class AccessoryChannel: NSObject {
             }
         }
 
-        print("received \(buffer.count) bytes: \(buffer.hexEncodedString())")
+//        print("received \(buffer.count) bytes: \(buffer.hexEncodedString())")
+        delegate?.didReceive(data: buffer)
     }
 
     private func handleWrite() {
@@ -74,30 +81,37 @@ class AccessoryChannel: NSObject {
         }
 
         session.inputStream?.delegate = self
-        session.inputStream?.schedule(in: .current, forMode: .default)
+        // TODO: Is using the main runloop bad?
+        session.inputStream?.schedule(in: .main, forMode: .default)
         session.inputStream?.open()
 
         session.outputStream?.delegate = self
-        session.outputStream?.schedule(in: .current, forMode: .default)
+        session.outputStream?.schedule(in: .main, forMode: .default)
         session.outputStream?.open()
 
         isConfigured = true
     }
 
     deinit {
-        print("deinit")
+        close()
+    }
+
+    func close() {
+        if (!isConfigured) {
+            return
+        }
+
         session.inputStream?.close()
         session.inputStream?.remove(from: .current, forMode: .default)
 
         session.outputStream?.close()
         session.outputStream?.remove(from: .current, forMode: .default)
     }
-
 }
 
 extension AccessoryChannel: StreamDelegate {
-    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-        print("got event: \(eventCode.toString())")
+   public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+//        print("got event: \(eventCode.toString())")
         switch eventCode {
         case .hasBytesAvailable:
             queue.async { [weak self] in self?.handleRead() }
