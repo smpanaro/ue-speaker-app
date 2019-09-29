@@ -7,127 +7,105 @@
 //
 
 import UIKit
-import CoreBluetooth
 import UEControlKit
+import os.log
 
 class ViewController: UIViewController {
 
-    let rollMacAddress = Data(base64Encoded: "wCiNAg8r")! // c0288d020f2b -- TODO: Save automatically.
-
-    let phoneMacAddressPlusOne = Data(base64Encoded: "zC23SLweAQ==")! // cc2db748bc1e01
-
-    let primaryUERollServiceUUID = CBUUID(string: "757ed3e4-1828-4a0c-8362-c229c3a6da72")
-    let powerOnCharacteristicUUID = CBUUID(string: "C6D6DC0D-07F5-47EF-9B59-630622B01FD3")
-
-    var manager: CBCentralManager!
-    var roll: CBPeripheral!
-    var seenNames = Set<String>()
+    @IBOutlet weak var messageTextField: UITextView!
+    @IBOutlet weak var speakerPowerButton: UIButton!
 
     var macScanner: UEMACAddressScanner!
+    var bleConnection: UELEBluetoothConnection!
 
+    enum State: String {
+        case initial = ""
+        case scanningForMACs = "Turn on your UE Roll and connect to it."
+        case scanningForBLE = "Scanning..."
+        case bleConnected = "Connected."
+        case turningOn = "Turning on..."
+        case speakerOn = "Turned on!"
+        case speakerOff = "Turned off!"
+    }
+    var state: State = .initial
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-//        manager = CBCentralManager(delegate: self, queue: nil)
+        speakerPowerButton.addTarget(self, action: #selector(didPressPowerButton), for: .touchUpInside)
 
-        macScanner = UEMACAddressScanner(delegate: self)
-        macScanner.start()
+        if Preferences.shared.hostMAC == nil || Preferences.shared.deviceMAC == nil {
+            state = .scanningForMACs
+
+            macScanner = UEMACAddressScanner(delegate: self)
+            macScanner.start()
+        }
+
+        bleConnection = UELEBluetoothConnection(delegate: self)
+
+        refreshUI()
     }
 
+    @objc
+    func didPressPowerButton() {
+        state = .turningOn
+        bleConnection.turnOn()
+        refreshUI()
+    }
+
+    func refreshUI() {
+        guard
+            Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil
+            else { return }
+
+        if [.initial, .scanningForMACs].contains(state) {
+            state = .scanningForBLE
+            bleConnection.connect()
+        }
+
+        speakerPowerButton.isUserInteractionEnabled = ![.initial, .scanningForMACs, .scanningForBLE, .turningOn].contains(state)
+
+        messageTextField.text = "Your MAC: \(Preferences.shared.hostMAC!)\nSpeaker MAC: \(Preferences.shared.deviceMAC!)\n\(state.rawValue)"
+    }
 }
 
 extension ViewController: UEMACAddressScannerDelegate {
     func didDiscover(ueDeviceMacAddress: String) {
-        print("Discovered UE MAC: \(ueDeviceMacAddress)")
+        os_log("Discovered UE MAC: %@", ueDeviceMacAddress)
+        Preferences.shared.deviceMAC = ueDeviceMacAddress
+        DispatchQueue.main.async { self.refreshUI() }
     }
 
     func didDiscover(hostDeviceMacAddress: String) {
-        print("Discovered host MAC: \(hostDeviceMacAddress)")
+        os_log("Discovered host MAC: %@", hostDeviceMacAddress)
+        Preferences.shared.hostMAC = hostDeviceMacAddress
+        DispatchQueue.main.async { self.refreshUI() }
     }
 
     func didEncounterError(error: Error) {
-        print("Encountered error: \(error.localizedDescription)")
+        os_log("Encountered error: ", error.localizedDescription)
+
+        DispatchQueue.main.async {
+            self.messageTextField.text = "Encountered error: \(error.localizedDescription)"
+        }
     }
 }
 
-extension ViewController: CBCentralManagerDelegate {
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-          case .unknown:
-            print("central.state is .unknown")
-          case .resetting:
-            print("central.state is .resetting")
-          case .unsupported:
-            print("central.state is .unsupported")
-          case .unauthorized:
-            print("central.state is .unauthorized")
-          case .poweredOff:
-            print("central.state is .poweredOff")
-          case .poweredOn:
-            print("central.state is .poweredOn")
-            manager.scanForPeripherals(withServices: nil, options: nil)// [CBCentralManagerScanOptionSolicitedServiceUUIDsKey: [primaryUERollService]])
-            manager.registerForConnectionEvents(options: nil)
-        @unknown default:
-
-            print("central.state is unknowndefault")
+extension ViewController: UELEBluetoothConnectionDelegate {
+    func didConnect() {
+        os_log("Connected to speaker via BLE")
+        DispatchQueue.main.async {
+            self.state = .bleConnected
+            self.refreshUI()
         }
     }
 
-
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        if let value = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data,
-            value == rollMacAddress {
-            print("Found roll: \(peripheral)")
-            central.stopScan()
-
-            roll = peripheral
-            roll.delegate = self
-
-            central.connect(peripheral, options: nil)
+    func didPowerOn() {
+        os_log("Turned speaker on")
+        DispatchQueue.main.async {
+            self.state = .speakerOn
+            self.refreshUI()
         }
-    }
-
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("did connect: \(peripheral)")
-
-        print(roll.discoverServices(nil))
-    }
-}
-
-extension ViewController: CBPeripheralDelegate {
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        print("did discover services: \(String(describing: peripheral.services))")
-
-        if let primaryService = peripheral.services?.filter({ $0.uuid == primaryUERollServiceUUID }).first {
-            roll.discoverCharacteristics(nil, for: primaryService)
-        }
-    }
-
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        print("characteristics: \(String(describing: service.characteristics))")
-
-
-        if let powerCharacteristic = service.characteristics?.filter({ $0.uuid == powerOnCharacteristicUUID }).first {
-            roll.discoverDescriptors(for: powerCharacteristic)
-
-//            print(powerCharacteristic.properties.toString())
-            peripheral.writeValue(phoneMacAddressPlusOne,
-                                  for: powerCharacteristic,
-                                  type: powerCharacteristic.properties.contains(.writeWithoutResponse) ? .withoutResponse : .withResponse)
-        }
-    }
-
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        print("discovered descriptors: \(String(describing: characteristic.descriptors))")
-    }
-
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print("wrote value for characteristic: \(characteristic.uuid) with error: \(String(describing: error))")
-    }
-
-    func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-        print("did update name: \(String(describing: peripheral.name))")
     }
 }

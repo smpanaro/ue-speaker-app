@@ -17,7 +17,7 @@ public class UEMACAddressScanner {
     let hostMACAddressCommand: Data = 0x0201AC // aka 428
     let ueMACAddressCommand: Data =   0x0201AE // aka 430
 
-    // TODO: Should this live here, in UEMACAddressScanner?
+    // TODO: Should this live here, in UEMACAddressScanner? .. This should be more generic, use sync comms in a bg queue.
     let powerOffCommand: Data = 0x0201B6 // Data(base64Encoded: "AgG2") // 0x02 01 B6 aka 438
 
     let manager: EAAccessoryManager
@@ -151,7 +151,7 @@ public class UEMACAddressScanner {
          macBuffer.append(data)
 
         if macBuffer.count > 9 {
-            delegate?.didEncounterError(error: UEMACScanError.unexpectedResponse(response: macBuffer.hexEncodedString()))
+            delegate?.didEncounterError(error: UEMACScanError.unexpectedResponse(response: macBuffer.hexadecimal))
             // TODO: Reconnect?
             return nil
         }
@@ -162,7 +162,7 @@ public class UEMACAddressScanner {
         }
 
         // Discard the leading 3 bytes. Not sure why but they aren't part of the MAC.
-        let macString = macBuffer.subdata(in: 3..<9).hexEncodedString()
+        let macString = macBuffer.subdata(in: 3..<9).hexadecimal
         macBuffer = Data()
         return macString
     }

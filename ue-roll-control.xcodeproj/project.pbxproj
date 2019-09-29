@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */; };
+		DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5B233F0DFB007E8E83 /* Preferences.swift */; };
+		DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */; };
 		DCC1469F233C56190030B228 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC1469E233C56190030B228 /* AppDelegate.swift */; };
 		DCC146A1233C56190030B228 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC146A0233C56190030B228 /* SceneDelegate.swift */; };
 		DCC146A3233C56190030B228 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC146A2233C56190030B228 /* ViewController.swift */; };
@@ -65,6 +67,10 @@
 
 /* Begin PBXFileReference section */
 		DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UEMACAddressScanner.swift; sourceTree = "<group>"; };
+		DC121D5B233F0DFB007E8E83 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		DC121D5D233F0E99007E8E83 /* ue-roll-control.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ue-roll-control.entitlements"; sourceTree = "<group>"; };
+		DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UELEBluetoothConnection.swift; sourceTree = "<group>"; };
+		DC121D6023413FBD007E8E83 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		DCC1469B233C56190030B228 /* ue-roll-control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ue-roll-control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC1469E233C56190030B228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCC146A0233C56190030B228 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +124,7 @@
 		DCC14692233C56190030B228 = {
 			isa = PBXGroup;
 			children = (
+				DC121D6023413FBD007E8E83 /* README.md */,
 				DCD985CA233EF0B000F2DE1B /* Playground.playground */,
 				DCC1469D233C56190030B228 /* ue-roll-control */,
 				DCD985A8233E505C00F2DE1B /* UEControlKit */,
@@ -140,6 +147,7 @@
 		DCC1469D233C56190030B228 /* ue-roll-control */ = {
 			isa = PBXGroup;
 			children = (
+				DC121D5D233F0E99007E8E83 /* ue-roll-control.entitlements */,
 				DCC1469E233C56190030B228 /* AppDelegate.swift */,
 				DCC146A0233C56190030B228 /* SceneDelegate.swift */,
 				DCC146A2233C56190030B228 /* ViewController.swift */,
@@ -165,8 +173,10 @@
 			children = (
 				DCD985A9233E505C00F2DE1B /* UEControlKit.h */,
 				DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */,
+				DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */,
 				DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */,
 				DCD985C6233E50D100F2DE1B /* SystemFramework+Utiilities.swift */,
+				DC121D5B233F0DFB007E8E83 /* Preferences.swift */,
 				DCD985AA233E505C00F2DE1B /* Info.plist */,
 			);
 			path = UEControlKit;
@@ -336,7 +346,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */,
+				DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */,
 				DCD985C7233E50D100F2DE1B /* SystemFramework+Utiilities.swift in Sources */,
+				DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */,
 				DCD985C5233E509B00F2DE1B /* AccessoryChannel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -508,6 +520,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "ue-roll-control/ue-roll-control.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L43QEJ2WY5;
 				INFOPLIST_FILE = "ue-roll-control/Info.plist";
@@ -527,6 +540,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "ue-roll-control/ue-roll-control.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L43QEJ2WY5;
 				INFOPLIST_FILE = "ue-roll-control/Info.plist";
