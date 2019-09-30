@@ -10,6 +10,13 @@
 		DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */; };
 		DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5B233F0DFB007E8E83 /* Preferences.swift */; };
 		DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */; };
+		DCA49D1823418C7400A61CDB /* SpeakerCommands+Intents.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */; };
+		DCA49D1923418DA400A61CDB /* TogglePowerIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B32341863A00F4208E /* TogglePowerIntentHandler.swift */; };
+		DCA49D1B23418DE200A61CDB /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */; };
+		DCA49D1C23418DEA00A61CDB /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		DCA49D1D23418DEB00A61CDB /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		DCA49D1E23418EE300A61CDB /* UEControlKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCD985A7233E505C00F2DE1B /* UEControlKit.framework */; };
+		DCA49D1F23418EE300A61CDB /* UEControlKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DCD985A7233E505C00F2DE1B /* UEControlKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DCC1469F233C56190030B228 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC1469E233C56190030B228 /* AppDelegate.swift */; };
 		DCC146A1233C56190030B228 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC146A0233C56190030B228 /* SceneDelegate.swift */; };
 		DCC146A3233C56190030B228 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC146A2233C56190030B228 /* ViewController.swift */; };
@@ -17,6 +24,9 @@
 		DCC146A8233C561B0030B228 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC146A7233C561B0030B228 /* Assets.xcassets */; };
 		DCC146AB233C561B0030B228 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCC146A9233C561B0030B228 /* LaunchScreen.storyboard */; };
 		DCC146B4233C563A0030B228 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCC146B3233C563A0030B228 /* CoreBluetooth.framework */; };
+		DCD5C4A8234185C000F4208E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4A7234185C000F4208E /* IntentHandler.swift */; };
+		DCD5C4AC234185C000F4208E /* UEControlIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DCD5C4A5234185C000F4208E /* UEControlIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DCD5C4B2234185DB00F4208E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		DCD9859F233D90D400F2DE1B /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCD9859E233D90D400F2DE1B /* ExternalAccessory.framework */; };
 		DCD985B0233E505C00F2DE1B /* UEControlKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCD985A7233E505C00F2DE1B /* UEControlKit.framework */; };
 		DCD985B7233E505C00F2DE1B /* UEControlKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD985B6233E505C00F2DE1B /* UEControlKitTests.swift */; };
@@ -28,6 +38,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DCA49D2023418EE300A61CDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCC14693233C56190030B228 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCD985A6233E505C00F2DE1B;
+			remoteInfo = UEControlKit;
+		};
+		DCD5C4AA234185C000F4208E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCC14693233C56190030B228 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCD5C4A4234185C000F4208E;
+			remoteInfo = UEControlIntents;
+		};
 		DCD985B1233E505C00F2DE1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DCC14693233C56190030B228 /* Project object */;
@@ -52,6 +76,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		DCA49D2223418EE300A61CDB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DCA49D1F23418EE300A61CDB /* UEControlKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCD5C4AD234185C000F4208E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DCD5C4AC234185C000F4208E /* UEControlIntents.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCD985C1233E505D00F2DE1B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -71,6 +117,8 @@
 		DC121D5D233F0E99007E8E83 /* ue-roll-control.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ue-roll-control.entitlements"; sourceTree = "<group>"; };
 		DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UELEBluetoothConnection.swift; sourceTree = "<group>"; };
 		DC121D6023413FBD007E8E83 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		DC543F312341B5E5005DFCB5 /* UEControlIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UEControlIntents.entitlements; sourceTree = "<group>"; };
+		DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpeakerCommands+Intents.swift"; sourceTree = "<group>"; };
 		DCC1469B233C56190030B228 /* ue-roll-control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ue-roll-control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC1469E233C56190030B228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCC146A0233C56190030B228 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +128,11 @@
 		DCC146AA233C561B0030B228 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCC146AC233C561B0030B228 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCC146B3233C563A0030B228 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		DCD5C4A5234185C000F4208E /* UEControlIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UEControlIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCD5C4A7234185C000F4208E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		DCD5C4A9234185C000F4208E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		DCD5C4B32341863A00F4208E /* TogglePowerIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglePowerIntentHandler.swift; sourceTree = "<group>"; };
 		DCD9859E233D90D400F2DE1B /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryChannel.swift; sourceTree = "<group>"; };
 		DCD985A7233E505C00F2DE1B /* UEControlKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UEControlKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +156,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCD5C4A2234185C000F4208E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCA49D1E23418EE300A61CDB /* UEControlKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCD985A4233E505C00F2DE1B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -121,6 +182,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DCA49D1A23418DB200A61CDB /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				DCD5C4B32341863A00F4208E /* TogglePowerIntentHandler.swift */,
+				DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */,
+				DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
 		DCC14692233C56190030B228 = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +199,7 @@
 				DCD985CA233EF0B000F2DE1B /* Playground.playground */,
 				DCC1469D233C56190030B228 /* ue-roll-control */,
 				DCD985A8233E505C00F2DE1B /* UEControlKit */,
+				DCD5C4A6234185C000F4208E /* UEControlIntents */,
 				DCD985B5233E505C00F2DE1B /* UEControlKitTests */,
 				DCC1469C233C56190030B228 /* Products */,
 				DCC146B2233C56390030B228 /* Frameworks */,
@@ -140,6 +212,7 @@
 				DCC1469B233C56190030B228 /* ue-roll-control.app */,
 				DCD985A7233E505C00F2DE1B /* UEControlKit.framework */,
 				DCD985AF233E505C00F2DE1B /* UEControlKitTests.xctest */,
+				DCD5C4A5234185C000F4208E /* UEControlIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,6 +241,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DCD5C4A6234185C000F4208E /* UEControlIntents */ = {
+			isa = PBXGroup;
+			children = (
+				DC543F312341B5E5005DFCB5 /* UEControlIntents.entitlements */,
+				DCD5C4A7234185C000F4208E /* IntentHandler.swift */,
+				DCD5C4A9234185C000F4208E /* Info.plist */,
+			);
+			path = UEControlIntents;
+			sourceTree = "<group>";
+		};
 		DCD985A8233E505C00F2DE1B /* UEControlKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +260,7 @@
 				DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */,
 				DCD985C6233E50D100F2DE1B /* SystemFramework+Utiilities.swift */,
 				DC121D5B233F0DFB007E8E83 /* Preferences.swift */,
+				DCA49D1A23418DB200A61CDB /* Intents */,
 				DCD985AA233E505C00F2DE1B /* Info.plist */,
 			);
 			path = UEControlKit;
@@ -213,16 +297,37 @@
 				DCC14698233C56190030B228 /* Frameworks */,
 				DCC14699233C56190030B228 /* Resources */,
 				DCD985C1233E505D00F2DE1B /* Embed Frameworks */,
+				DCD5C4AD234185C000F4208E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				DCD985BB233E505C00F2DE1B /* PBXTargetDependency */,
+				DCD5C4AB234185C000F4208E /* PBXTargetDependency */,
 			);
 			name = "ue-roll-control";
 			productName = "ue-roll-control";
 			productReference = DCC1469B233C56190030B228 /* ue-roll-control.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DCD5C4A4234185C000F4208E /* UEControlIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCD5C4B0234185C000F4208E /* Build configuration list for PBXNativeTarget "UEControlIntents" */;
+			buildPhases = (
+				DCD5C4A1234185C000F4208E /* Sources */,
+				DCD5C4A2234185C000F4208E /* Frameworks */,
+				DCD5C4A3234185C000F4208E /* Resources */,
+				DCA49D2223418EE300A61CDB /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCA49D2123418EE300A61CDB /* PBXTargetDependency */,
+			);
+			name = UEControlIntents;
+			productName = UEControlIntents;
+			productReference = DCD5C4A5234185C000F4208E /* UEControlIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		DCD985A6233E505C00F2DE1B /* UEControlKit */ = {
 			isa = PBXNativeTarget;
@@ -274,6 +379,9 @@
 					DCC1469A233C56190030B228 = {
 						CreatedOnToolsVersion = 11.0;
 					};
+					DCD5C4A4234185C000F4208E = {
+						CreatedOnToolsVersion = 11.0;
+					};
 					DCD985A6233E505C00F2DE1B = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -299,6 +407,7 @@
 				DCC1469A233C56190030B228 /* ue-roll-control */,
 				DCD985A6233E505C00F2DE1B /* UEControlKit */,
 				DCD985AE233E505C00F2DE1B /* UEControlKitTests */,
+				DCD5C4A4234185C000F4208E /* UEControlIntents */,
 			);
 		};
 /* End PBXProject section */
@@ -311,6 +420,13 @@
 				DCC146AB233C561B0030B228 /* LaunchScreen.storyboard in Resources */,
 				DCC146A8233C561B0030B228 /* Assets.xcassets in Resources */,
 				DCC146A6233C56190030B228 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCD5C4A3234185C000F4208E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +453,17 @@
 			files = (
 				DCC146A3233C56190030B228 /* ViewController.swift in Sources */,
 				DCC1469F233C56190030B228 /* AppDelegate.swift in Sources */,
+				DCA49D1C23418DEA00A61CDB /* Intents.intentdefinition in Sources */,
 				DCC146A1233C56190030B228 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCD5C4A1234185C000F4208E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCD5C4B2234185DB00F4208E /* Intents.intentdefinition in Sources */,
+				DCD5C4A8234185C000F4208E /* IntentHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,8 +473,11 @@
 			files = (
 				DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */,
 				DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */,
+				DCA49D1923418DA400A61CDB /* TogglePowerIntentHandler.swift in Sources */,
 				DCD985C7233E50D100F2DE1B /* SystemFramework+Utiilities.swift in Sources */,
+				DCA49D1823418C7400A61CDB /* SpeakerCommands+Intents.swift in Sources */,
 				DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */,
+				DCA49D1B23418DE200A61CDB /* Intents.intentdefinition in Sources */,
 				DCD985C5233E509B00F2DE1B /* AccessoryChannel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCA49D1D23418DEB00A61CDB /* Intents.intentdefinition in Sources */,
 				DCD985B7233E505C00F2DE1B /* UEControlKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,6 +494,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DCA49D2123418EE300A61CDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCD985A6233E505C00F2DE1B /* UEControlKit */;
+			targetProxy = DCA49D2023418EE300A61CDB /* PBXContainerItemProxy */;
+		};
+		DCD5C4AB234185C000F4208E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCD5C4A4234185C000F4208E /* UEControlIntents */;
+			targetProxy = DCD5C4AA234185C000F4208E /* PBXContainerItemProxy */;
+		};
 		DCD985B2233E505C00F2DE1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DCD985A6233E505C00F2DE1B /* UEControlKit */;
@@ -555,9 +695,50 @@
 			};
 			name = Release;
 		};
+		DCD5C4AE234185C000F4208E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UEControlIntents/UEControlIntents.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L43QEJ2WY5;
+				INFOPLIST_FILE = UEControlIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hedgemereapps.ue-roll-control.UEControlIntents";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DCD5C4AF234185C000F4208E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UEControlIntents/UEControlIntents.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L43QEJ2WY5;
+				INFOPLIST_FILE = UEControlIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hedgemereapps.ue-roll-control.UEControlIntents";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		DCD985BF233E505D00F2DE1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -585,6 +766,7 @@
 		DCD985C0233E505D00F2DE1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -666,6 +848,15 @@
 			buildConfigurations = (
 				DCC146B0233C561B0030B228 /* Debug */,
 				DCC146B1233C561B0030B228 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCD5C4B0234185C000F4208E /* Build configuration list for PBXNativeTarget "UEControlIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCD5C4AE234185C000F4208E /* Debug */,
+				DCD5C4AF234185C000F4208E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

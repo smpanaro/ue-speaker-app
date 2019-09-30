@@ -9,6 +9,7 @@
 import UIKit
 import UEControlKit
 import os.log
+import Intents
 
 class ViewController: UIViewController {
 
@@ -45,6 +46,11 @@ class ViewController: UIViewController {
         bleConnection = UELEBluetoothConnection(delegate: self)
 
         refreshUI()
+
+        #if targetEnvironment(simulator)
+            // Test Shortcuts without Bluetooth
+            submitShortcutSuggestions()
+        #endif
     }
 
     @objc
@@ -59,6 +65,9 @@ class ViewController: UIViewController {
             Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil
             else { return }
 
+         // Now that we have both MACs, we can enable Shortcuts.
+        submitShortcutSuggestions()
+
         if [.initial, .scanningForMACs].contains(state) {
             state = .scanningForBLE
             bleConnection.connect()
@@ -67,6 +76,11 @@ class ViewController: UIViewController {
         speakerPowerButton.isUserInteractionEnabled = ![.initial, .scanningForMACs, .scanningForBLE, .turningOn].contains(state)
 
         messageTextField.text = "Your MAC: \(Preferences.shared.hostMAC!)\nSpeaker MAC: \(Preferences.shared.deviceMAC!)\n\(state.rawValue)"
+    }
+
+    func submitShortcutSuggestions() {
+        INVoiceShortcutCenter.shared.setShortcutSuggestions([
+            INShortcut(intent: SpeakerCommands.powerOnIntent), INShortcut(intent: SpeakerCommands.powerOffIntent)].compactMap({$0}))
     }
 }
 

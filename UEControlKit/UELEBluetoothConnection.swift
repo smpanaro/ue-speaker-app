@@ -59,6 +59,11 @@ public class UELEBluetoothConnection: NSObject {
 
         ueDeviceMAC = Preferences.shared.deviceMAC
         hostDeviceMAC = Preferences.shared.hostMAC
+
+        if ueDeviceMAC == nil || hostDeviceMAC == nil {
+            os_log(.error, "Attempting to create a BLE connection without a device and/or host MAC. This will fail.")
+        }
+
         manager = CBCentralManager(delegate: self, queue: nil)
     }
 
