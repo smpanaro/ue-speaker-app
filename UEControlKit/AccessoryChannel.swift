@@ -8,11 +8,13 @@
 
 import Foundation
 import ExternalAccessory
+import os.log
 
 protocol AccessoryChannelDelegate {
-    func didReceive(data: Data)
+    func didReceive(packet: Data)
 }
 
+/// Manages the communication channel between a UE speaker and iOS device.
 class AccessoryChannel: NSObject {
 
     let session: EASession
@@ -22,10 +24,15 @@ class AccessoryChannel: NSObject {
 
     private var isConfigured: Bool = false
     private var writeBuffer = Data(capacity: 0)
+    private var readBuffer = Data(capacity: 0)
 
     init(session: EASession, delegate: AccessoryChannelDelegate) {
         self.session = session
-        self.queue = DispatchQueue(label: "com.hedgemereapps.accessory-channel-queue", qos: .default, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+        self.queue = DispatchQueue(label: "com.hedgemereapps.accessory-channel-queue",
+                                   qos: .utility,
+                                   attributes: [],
+                                   autoreleaseFrequency: .inherit,
+                                   target: DispatchQueue.global(qos: .utility))
         self.delegate = delegate
         super.init()
     }
@@ -38,15 +45,12 @@ class AccessoryChannel: NSObject {
         }
     }
 
-    private func handleRead() {
+    fileprivate func handleRead() {
         guard let input = session.inputStream else { return }
 
-        var buffer = Data(capacity: 0)
-
-//        print("handling read, has bytes: \(input.hasBytesAvailable)")
         while input.hasBytesAvailable {
             do {
-                try buffer.append(input.read(maxLength: 100))
+                try readBuffer.append(input.read(maxLength: 100))
             }
             catch {
                 print("Error reading bytes.")
@@ -54,21 +58,39 @@ class AccessoryChannel: NSObject {
             }
         }
 
-//        print("received \(buffer.count) bytes: \(buffer.hexEncodedString())")
-        delegate?.didReceive(data: buffer)
+        os_log(.debug, "Received data. Read buffer: %@", readBuffer.hexadecimal)
+        processReadBuffer()
     }
 
-    private func handleWrite() {
+    fileprivate func processReadBuffer() {
+        while (readBuffer.count > 0) {
+            // The length of the message comes first.
+            let messageLength = readBuffer[0]
+            let packetLength = Int(messageLength + 1) // Packet is [length byte][message bytes]
+
+            // See if we have the whole message. The length specifies the number of bytes to follow.
+            guard readBuffer.count >= packetLength else { break }
+
+            // Remove the packet from the read buffer...
+            let (packetStart, packetEnd) = (readBuffer.startIndex, readBuffer.startIndex+packetLength)
+            let packet = readBuffer[packetStart..<packetEnd]
+            readBuffer.removeSubrange(0..<packetLength)
+
+            // ...and send it off.
+            delegate?.didReceive(packet: packet)
+        }
+    }
+
+    fileprivate func handleWrite() {
         guard let output = session.outputStream else { return }
 
-//        print("handling write, ouput has space: \(output.hasSpaceAvailable), buffer size: \(writeBuffer.count)")
         while output.hasSpaceAvailable && writeBuffer.count > 0 {
             do {
                 let bytesWritten = try output.write(data: writeBuffer)
                 writeBuffer.removeSubrange(0..<bytesWritten)
             }
             catch {
-                print("Error writing data.")
+                os_log(.error, "Error writing data: %@", error.localizedDescription)
                 break
             }
         }
@@ -111,7 +133,6 @@ class AccessoryChannel: NSObject {
 
 extension AccessoryChannel: StreamDelegate {
    public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-//        print("got event: \(eventCode.toString())")
         switch eventCode {
         case .hasBytesAvailable:
             queue.async { [weak self] in self?.handleRead() }
@@ -120,6 +141,7 @@ extension AccessoryChannel: StreamDelegate {
             queue.async { [weak self] in self?.handleWrite() }
             break
         default:
+            os_log(.info, "Received unexpected stream event: %@", eventCode.toString())
             break
         }
     }

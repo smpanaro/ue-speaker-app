@@ -12,7 +12,6 @@ import CoreBluetooth
 extension Data {
 
     /// Hexadecimal string representation of `Data` object.
-
     var hexadecimal: String {
         return map { String(format: "%02x", $0) }
             .joined()
@@ -26,7 +25,6 @@ extension String {
     /// This creates a `Data` object from hex string. Note, if the string has any spaces or non-hex characters (e.g. starts with '<' and with a '>'), those are ignored and only hex characters are processed.
     ///
     /// - returns: Data represented by this hexadecimal string.
-
     var hexadecimal: Data? {
         var data = Data(capacity: count / 2)
 
@@ -51,7 +49,7 @@ extension Data: ExpressibleByIntegerLiteral {
         var value = value
         var bytes = [UInt8]()
         while (value != 0) {
-            let lo = UInt8(value & 255)
+            let lo = UInt8(value & 0xFF)
             bytes.append(lo)
             value = value >> 8
         }

@@ -10,7 +10,10 @@ import Foundation
 import CoreBluetooth
 import os.log
 
+/// Discovers, connects and sends commands to a UE speaker via BLE. Only works when the speaker is off.
 public class UELowEnergyBluetoothConnection: NSObject {
+
+    public var isConnected = false
 
     enum Service: String {
         // Used in Android App
@@ -35,7 +38,7 @@ public class UELowEnergyBluetoothConnection: NSObject {
         // Others
         case appearance = "00002a01-0000-1000-8000-00805f9b34fb"
         case modelNumber = "00002a24-0000-1000-8000-00805f9b34fb"
-        case unkownUseAtYourOwnRisk = "16e009bb-3862-43c7-8f5c-6f654a4ffdd2"
+        case unkownUseAtYourOwnRisk = "16e009bb-3862-43c7-8f5c-6f654a4ffdd2" // :)
 
         var uuid: CBUUID { return CBUUID(string: self.rawValue) }
     }
@@ -43,45 +46,39 @@ public class UELowEnergyBluetoothConnection: NSObject {
     var manager: CBCentralManager!
     var device: CBPeripheral?
 
-    var ueDeviceMAC: String!
-    var hostDeviceMAC: String!
+    private var didConnectCallback: (() -> Void)?
+    private var powerOnCallback: (() -> Void)?
 
-    var delegate: UELEBluetoothConnectionDelegate?
-
-    public init(delegate: UELEBluetoothConnectionDelegate) {
-        super.init()
-
-        self.delegate = delegate
-    }
-
-    public func connect() {
+    public func connect(completion: (() -> Void)?) {
         guard manager == nil else { return }
 
-        ueDeviceMAC = Preferences.shared.deviceMAC
-        hostDeviceMAC = Preferences.shared.hostMAC
-
-        if ueDeviceMAC == nil || hostDeviceMAC == nil {
-            os_log(.error, "Attempting to create a BLE connection without a device and/or host MAC. This will fail.")
-        }
-
+        didConnectCallback = completion
         manager = CBCentralManager(delegate: self, queue: nil)
     }
 
-    public func turnOn() {
+    func scan() {
+        // Seems like none of the services are advertised so have to query for everything and filter.
+        manager.scanForPeripherals(withServices: nil, options: nil)
+    }
+
+    public func rescan(completion: (() -> Void)?) {
+        didConnectCallback = completion
+        manager.stopScan()
+        scan()
+    }
+
+    public func requestPowerOn(completion: (() -> Void)? = nil) {
+        powerOnCallback = completion
         if let service = device?.services?.filter({ $0.uuid == Service.primary.uuid }).first,
             let powerCharacteristic = service.characteristics?.filter({ $0.uuid == Characteristic.powerOn.uuid }).first,
+            let hostMAC = Preferences.shared.hostMAC,
             // Not sure why, but you're supposed to pad with a 0x01. Might be that 1/0 is on/off (but this is always on).
-            let value = (hostDeviceMAC+"01").hexadecimal {
+            let value = (hostMAC+"01").hexadecimal {
             device?.writeValue(value,
                                   for: powerCharacteristic,
                                   type: powerCharacteristic.properties.contains(.writeWithoutResponse) ? .withoutResponse : .withResponse)
         }
     }
-}
-
-public protocol UELEBluetoothConnectionDelegate {
-    func didConnect()
-    func didPowerOn()
 }
 
 extension UELowEnergyBluetoothConnection: CBCentralManagerDelegate {
@@ -100,8 +97,7 @@ extension UELowEnergyBluetoothConnection: CBCentralManagerDelegate {
           case .poweredOn:
             os_log(.debug, "CoreBluetooth central.state is .poweredOn")
             os_log("Starting BLE peripheral scan.")
-            // Seems like none of the services are advertised so have to filter through everything.
-            manager.scanForPeripherals(withServices: nil, options: nil)
+            scan()
         @unknown default:
             os_log(.debug, "CoreBluetooth central.state is unkown default")
         }
@@ -110,7 +106,8 @@ extension UELowEnergyBluetoothConnection: CBCentralManagerDelegate {
 
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if let value = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data,
-            value == ueDeviceMAC.hexadecimal {
+            let deviceMAC = Preferences.shared.deviceMAC?.hexadecimal,
+            value == deviceMAC {
 
             os_log("Found speaker via BLE: %@", peripheral)
             central.stopScan()
@@ -126,6 +123,11 @@ extension UELowEnergyBluetoothConnection: CBCentralManagerDelegate {
         os_log("Connected to speaker via BLE: %@", peripheral)
         device?.discoverServices(nil)
     }
+
+    public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        os_log("Disconnect from speaker via BLE: %@", peripheral)
+        isConnected = false
+    }
 }
 
 extension UELowEnergyBluetoothConnection: CBPeripheralDelegate {
@@ -139,14 +141,17 @@ extension UELowEnergyBluetoothConnection: CBPeripheralDelegate {
     public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         logError(errorFormat: "Error discovering characteristic: %@", error: error)
         if service.characteristics?.filter({ $0.uuid == Characteristic.powerOn.uuid }).first != nil {
-            delegate?.didConnect()
+            isConnected = true
+            didConnectCallback?()
+            didConnectCallback = nil
         }
     }
 
     public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         logError(errorFormat: "Error writing value for characteristic: %@", error: error)
         if error == nil {
-            delegate?.didPowerOn()
+            powerOnCallback?()
+            powerOnCallback = nil
         }
     }
 

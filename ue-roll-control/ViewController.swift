@@ -16,19 +16,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var messageTextField: UITextView!
     @IBOutlet weak var speakerPowerButton: UIButton!
 
-    var macScanner: UEMACAddressScanner!
-    var bleConnection: UELEBluetoothConnection!
+    var classicConnection: UEClassicBluetoothConnection!
+    var bleConnection: UELowEnergyBluetoothConnection!
 
-    enum State: String {
-        case initial = ""
-        case scanningForMACs = "Turn on your UE Roll and connect to it."
-        case scanningForBLE = "Scanning..."
-        case bleConnected = "Connected."
-        case turningOn = "Turning on..."
-        case speakerOn = "Turned on!"
-        case speakerOff = "Turned off!"
-    }
-    var state: State = .initial
+    var speakerConnection: UESpeakerConnection!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +27,20 @@ class ViewController: UIViewController {
 
         speakerPowerButton.addTarget(self, action: #selector(didPressPowerButton), for: .touchUpInside)
 
-        if Preferences.shared.hostMAC == nil || Preferences.shared.deviceMAC == nil {
-            state = .scanningForMACs
 
-            macScanner = UEMACAddressScanner(delegate: self)
-            macScanner.start()
-        }
+//        classicConnection = UEClassicBluetoothConnection(delegate: self)
+//        classicConnection.start()
+//
+//        bleConnection = UELowEnergyBluetoothConnection()
+//        bleConnection.connect { [weak self] in
+//            os_log("Connected to speaker via BLE")
+//            DispatchQueue.main.async {
+//                self?.refreshUI()
+//            }
+//        }
 
-        bleConnection = UELEBluetoothConnection(delegate: self)
+        speakerConnection = UESpeakerConnection(stateDidChange: speakerStateChanged)
+        speakerConnection.connect()
 
         refreshUI()
 
@@ -51,31 +48,80 @@ class ViewController: UIViewController {
             // Test Shortcuts without Bluetooth
             submitShortcutSuggestions()
         #endif
+
+        if Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil {
+            submitShortcutSuggestions()
+        }
+    }
+
+    func speakerStateChanged(newState: UESpeakerConnection.State) {
+        os_log("New speaker state: %@", newState.rawValue)
+        switch speakerConnection.state {
+        case .on:
+            handleSpeakerTurnedOn()
+        default: break
+        }
+
+        DispatchQueue.main.async { self.refreshUI() }
+    }
+
+    func handleSpeakerTurnedOn() {
+        guard
+            Preferences.shared.hostMAC == nil || Preferences.shared.deviceMAC == nil
+            else { return }
+
+        speakerConnection.requestDeviceMAC { [weak speakerConnection, weak self] deviceMAC in
+            speakerConnection?.requestHostMAC { hostMAC in
+                Preferences.shared.deviceMAC = deviceMAC
+                Preferences.shared.hostMAC = hostMAC
+                DispatchQueue.main.async {
+                     // Now that we have both MACs, we can enable Shortcuts.
+                    self?.submitShortcutSuggestions()
+                    self?.refreshUI()
+                }
+            }
+        }
     }
 
     @objc
     func didPressPowerButton() {
-        state = .turningOn
-        bleConnection.turnOn()
-        refreshUI()
+//        if bleConnection.isConnected {
+//            bleConnection.requestPowerOn()
+//        }
+//        else if classicConnection.isConnected {
+//            classicConnection.requestPowerOff()
+//        }
+//        speakerPowerButton.setTitle("...", for: .normal)
+//
+        switch speakerConnection.state {
+        case .on:
+            speakerConnection.requestPowerOff()
+        case .off:
+            speakerConnection.requestPowerOn()
+        case .unknown: break
+        }
     }
 
     func refreshUI() {
-        guard
-            Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil
-            else { return }
+//        let buttonTitle = bleConnection.isConnected ? "Turn speaker on" : classicConnection.isConnected ? "Turn speaker off" : ""
+//        speakerPowerButton.setTitle(buttonTitle, for: .normal)
+//        speakerPowerButton.isEnabled = bleConnection.isConnected || classicConnection.isConnected
+//
+//        let macText = Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil ?
+//            "Your MAC: \(Preferences.shared.hostMAC!)\nSpeaker MAC: \(Preferences.shared.deviceMAC!)" :
+//            "Performing setup, please power on and connect your speaker."
+//        let speakerState = bleConnection.isConnected ? "Speaker off" : classicConnection.isConnected ? "Speaker on" : "Scanning..."
+//        messageTextField.text = [macText, speakerState].joined(separator: "\n")
 
-         // Now that we have both MACs, we can enable Shortcuts.
-        submitShortcutSuggestions()
+        let buttonTitle = speakerConnection.state == .on ? "Turn speaker off" : speakerConnection.state == .off ? "Turn speaker on" : ""
+        speakerPowerButton.setTitle(buttonTitle, for: .normal)
+        speakerPowerButton.isEnabled = [.on, .off].contains(speakerConnection.state)
 
-        if [.initial, .scanningForMACs].contains(state) {
-            state = .scanningForBLE
-            bleConnection.connect()
-        }
-
-        speakerPowerButton.isUserInteractionEnabled = ![.initial, .scanningForMACs, .scanningForBLE, .turningOn].contains(state)
-
-        messageTextField.text = "Your MAC: \(Preferences.shared.hostMAC!)\nSpeaker MAC: \(Preferences.shared.deviceMAC!)\n\(state.rawValue)"
+        let macText = Preferences.shared.hostMAC != nil && Preferences.shared.deviceMAC != nil ?
+            "Your MAC: \(Preferences.shared.hostMAC!)\nSpeaker MAC: \(Preferences.shared.deviceMAC!)" :
+            "Performing setup, please power on and connect your speaker."
+        let speakerState = speakerConnection.state == .unknown ? "Scanning..." : "Speaker \(speakerConnection.state.rawValue)"
+        messageTextField.text = [macText, speakerState].joined(separator: "\n")
     }
 
     func submitShortcutSuggestions() {
@@ -84,17 +130,33 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UEMACAddressScannerDelegate {
-    func didDiscover(ueDeviceMacAddress: String) {
-        os_log("Discovered UE MAC: %@", ueDeviceMacAddress)
-        Preferences.shared.deviceMAC = ueDeviceMacAddress
-        DispatchQueue.main.async { self.refreshUI() }
+extension ViewController: UEClassicBluetoothConnectionDelegate {
+    func didConnect(connection: UEClassicBluetoothConnection) {
+        guard
+            Preferences.shared.hostMAC == nil || Preferences.shared.deviceMAC == nil
+            else {
+                DispatchQueue.main.async { self.refreshUI() }
+                return
+        }
+
+        connection.requestDeviceMAC { [weak connection, weak self] deviceMAC in
+            connection?.requestHostMAC { hostMAC in
+                Preferences.shared.deviceMAC = deviceMAC
+                Preferences.shared.hostMAC = hostMAC
+                DispatchQueue.main.async {
+                     // Now that we have both MACs, we can enable Shortcuts.
+                    self?.submitShortcutSuggestions()
+                    self?.refreshUI()
+                }
+            }
+        }
     }
 
-    func didDiscover(hostDeviceMacAddress: String) {
-        os_log("Discovered host MAC: %@", hostDeviceMacAddress)
-        Preferences.shared.hostMAC = hostDeviceMacAddress
-        DispatchQueue.main.async { self.refreshUI() }
+    func didDisconnect(connection: UEClassicBluetoothConnection) {
+        DispatchQueue.main.async {
+            self.refreshUI()
+            self.bleConnection.rescan() {}
+        }
     }
 
     func didEncounterError(error: Error) {
@@ -102,24 +164,6 @@ extension ViewController: UEMACAddressScannerDelegate {
 
         DispatchQueue.main.async {
             self.messageTextField.text = "Encountered error: \(error.localizedDescription)"
-        }
-    }
-}
-
-extension ViewController: UELEBluetoothConnectionDelegate {
-    func didConnect() {
-        os_log("Connected to speaker via BLE")
-        DispatchQueue.main.async {
-            self.state = .bleConnected
-            self.refreshUI()
-        }
-    }
-
-    func didPowerOn() {
-        os_log("Turned speaker on")
-        DispatchQueue.main.async {
-            self.state = .speakerOn
-            self.refreshUI()
         }
     }
 }

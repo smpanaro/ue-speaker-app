@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */; };
+		DC121D5A233EF4BB007E8E83 /* UEClassicBluetoothConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D59233EF4BB007E8E83 /* UEClassicBluetoothConnection.swift */; };
 		DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5B233F0DFB007E8E83 /* Preferences.swift */; };
-		DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */; };
+		DC121D5F233F1476007E8E83 /* UELowEnergyBluetoothConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC121D5E233F1476007E8E83 /* UELowEnergyBluetoothConnection.swift */; };
+		DC543F33234243D0005DFCB5 /* UEClassicBluetoothCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC543F32234243D0005DFCB5 /* UEClassicBluetoothCommands.swift */; };
+		DC543F352345B100005DFCB5 /* UESpeakerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC543F342345B100005DFCB5 /* UESpeakerConnection.swift */; };
 		DCA49D1823418C7400A61CDB /* SpeakerCommands+Intents.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */; };
 		DCA49D1923418DA400A61CDB /* TogglePowerIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B32341863A00F4208E /* TogglePowerIntentHandler.swift */; };
 		DCA49D1B23418DE200A61CDB /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C4B1234185DB00F4208E /* Intents.intentdefinition */; };
@@ -112,12 +114,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UEMACAddressScanner.swift; sourceTree = "<group>"; };
+		DC121D59233EF4BB007E8E83 /* UEClassicBluetoothConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UEClassicBluetoothConnection.swift; sourceTree = "<group>"; };
 		DC121D5B233F0DFB007E8E83 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		DC121D5D233F0E99007E8E83 /* ue-roll-control.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ue-roll-control.entitlements"; sourceTree = "<group>"; };
-		DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UELEBluetoothConnection.swift; sourceTree = "<group>"; };
+		DC121D5E233F1476007E8E83 /* UELowEnergyBluetoothConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UELowEnergyBluetoothConnection.swift; sourceTree = "<group>"; };
 		DC121D6023413FBD007E8E83 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		DC543F312341B5E5005DFCB5 /* UEControlIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UEControlIntents.entitlements; sourceTree = "<group>"; };
+		DC543F32234243D0005DFCB5 /* UEClassicBluetoothCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UEClassicBluetoothCommands.swift; sourceTree = "<group>"; };
+		DC543F342345B100005DFCB5 /* UESpeakerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UESpeakerConnection.swift; sourceTree = "<group>"; };
 		DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpeakerCommands+Intents.swift"; sourceTree = "<group>"; };
 		DCC1469B233C56190030B228 /* ue-roll-control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ue-roll-control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC1469E233C56190030B228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -255,9 +259,11 @@
 			isa = PBXGroup;
 			children = (
 				DCD985A9233E505C00F2DE1B /* UEControlKit.h */,
+				DC543F342345B100005DFCB5 /* UESpeakerConnection.swift */,
+				DC121D5E233F1476007E8E83 /* UELowEnergyBluetoothConnection.swift */,
+				DC121D59233EF4BB007E8E83 /* UEClassicBluetoothConnection.swift */,
 				DCD985A0233DD10700F2DE1B /* AccessoryChannel.swift */,
-				DC121D5E233F1476007E8E83 /* UELEBluetoothConnection.swift */,
-				DC121D59233EF4BB007E8E83 /* UEMACAddressScanner.swift */,
+				DC543F32234243D0005DFCB5 /* UEClassicBluetoothCommands.swift */,
 				DCD985C6233E50D100F2DE1B /* SystemFramework+Utiilities.swift */,
 				DC121D5B233F0DFB007E8E83 /* Preferences.swift */,
 				DCA49D1A23418DB200A61CDB /* Intents */,
@@ -471,14 +477,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC121D5A233EF4BB007E8E83 /* UEMACAddressScanner.swift in Sources */,
-				DC121D5F233F1476007E8E83 /* UELEBluetoothConnection.swift in Sources */,
+				DC121D5A233EF4BB007E8E83 /* UEClassicBluetoothConnection.swift in Sources */,
+				DC121D5F233F1476007E8E83 /* UELowEnergyBluetoothConnection.swift in Sources */,
 				DCA49D1923418DA400A61CDB /* TogglePowerIntentHandler.swift in Sources */,
 				DCD985C7233E50D100F2DE1B /* SystemFramework+Utiilities.swift in Sources */,
 				DCA49D1823418C7400A61CDB /* SpeakerCommands+Intents.swift in Sources */,
+				DC543F352345B100005DFCB5 /* UESpeakerConnection.swift in Sources */,
 				DC121D5C233F0DFB007E8E83 /* Preferences.swift in Sources */,
 				DCA49D1B23418DE200A61CDB /* Intents.intentdefinition in Sources */,
 				DCD985C5233E509B00F2DE1B /* AccessoryChannel.swift in Sources */,
+				DC543F33234243D0005DFCB5 /* UEClassicBluetoothCommands.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
