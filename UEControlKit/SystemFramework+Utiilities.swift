@@ -9,6 +9,7 @@
 import Foundation
 import CoreBluetooth
 
+// https://stackoverflow.com/questions/26501276
 extension Data {
 
     /// Hexadecimal string representation of `Data` object.

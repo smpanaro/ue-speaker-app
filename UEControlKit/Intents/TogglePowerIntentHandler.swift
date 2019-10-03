@@ -11,16 +11,7 @@ import Intents
 import os.log
 
 public class TogglePowerIntentHandler: NSObject, TogglePowerIntentHandling {
-    var bleConnection: UELowEnergyBluetoothConnection!
-    var classicConnection: UEClassicBluetoothConnection!
-
     var speakerConnection: UESpeakerConnection!
-
-    public override init() {
-        super.init()
-        bleConnection = UELowEnergyBluetoothConnection()
-        classicConnection = UEClassicBluetoothConnection()
-    }
 
     public func handle(intent: TogglePowerIntent, completion: @escaping (TogglePowerIntentResponse) -> Void) {
         os_log("Handling intent: %@", intent)
@@ -43,40 +34,9 @@ public class TogglePowerIntentHandler: NSObject, TogglePowerIntentHandling {
         speakerConnection.connect()
 
         // Set up time out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            completion(TogglePowerIntentResponse.notFound(state: intent.state))
-        }
-    }
-
-    func handlePowerOn(intent: TogglePowerIntent, completion: @escaping (TogglePowerIntentResponse) -> Void) {
-
-        bleConnection.connect { [weak self] in
-            self?.bleConnection.requestPowerOn() {
-                DispatchQueue.main.async {
-                    completion(TogglePowerIntentResponse.success(state: intent.state))
-                }
-            }
-        }
-
-        // Set up time out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            completion(TogglePowerIntentResponse.notFound(state: intent.state))
-        }
-    }
-
-    func handlePowerOff(intent: TogglePowerIntent, completion: @escaping (TogglePowerIntentResponse) -> Void) {
-        classicConnection.start() { [weak self] in
-            self?.classicConnection.requestPowerOff()
-            DispatchQueue.main.async {
-                // Be optimistic so the shortcut can continue sooner.
-                completion(TogglePowerIntentResponse.success(state: intent.state))
-            }
-        }
-
-        // Set up time out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            completion(TogglePowerIntentResponse.notFound(state: intent.state))
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+//            completion(TogglePowerIntentResponse.notFound(state: intent.state))
+//        }
     }
 
     public func resolveState(for intent: TogglePowerIntent, with completion: @escaping (StateResolutionResult) -> Void) {
