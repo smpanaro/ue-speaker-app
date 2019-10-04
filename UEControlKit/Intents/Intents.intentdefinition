@@ -166,6 +166,10 @@
 						<true/>
 					</dict>
 					<dict>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>Couldn't connect to your speaker.</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>2yk1ku</string>
 						<key>INIntentResponseCodeName</key>
 						<string>failure</string>
 					</dict>
@@ -174,6 +178,10 @@
 						<string>Couldn't connect to your speaker.</string>
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>G4evGb</string>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>Couldn't connect to your speaker.</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>3F0BLl</string>
 						<key>INIntentResponseCodeName</key>
 						<string>notFound</string>
 					</dict>

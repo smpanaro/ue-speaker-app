@@ -53,7 +53,7 @@ class AccessoryChannel: NSObject {
                 try readBuffer.append(input.read(maxLength: 100))
             }
             catch {
-                print("Error reading bytes.")
+                os_log(.error, "Error reading bytes.")
                 break
             }
         }

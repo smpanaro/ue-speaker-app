@@ -123,7 +123,7 @@
 		DC543F32234243D0005DFCB5 /* UEClassicBluetoothCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UEClassicBluetoothCommands.swift; sourceTree = "<group>"; };
 		DC543F342345B100005DFCB5 /* UESpeakerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UESpeakerConnection.swift; sourceTree = "<group>"; };
 		DCA49D1723418C7400A61CDB /* SpeakerCommands+Intents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpeakerCommands+Intents.swift"; sourceTree = "<group>"; };
-		DCC1469B233C56190030B228 /* ue-roll-control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ue-roll-control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC1469B233C56190030B228 /* UE Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UE Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCC1469E233C56190030B228 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCC146A0233C56190030B228 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DCC146A2233C56190030B228 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 		DCC1469C233C56190030B228 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DCC1469B233C56190030B228 /* ue-roll-control.app */,
+				DCC1469B233C56190030B228 /* UE Control.app */,
 				DCD985A7233E505C00F2DE1B /* UEControlKit.framework */,
 				DCD985AF233E505C00F2DE1B /* UEControlKitTests.xctest */,
 				DCD5C4A5234185C000F4208E /* UEControlIntents.appex */,
@@ -313,7 +313,7 @@
 			);
 			name = "ue-roll-control";
 			productName = "ue-roll-control";
-			productReference = DCC1469B233C56190030B228 /* ue-roll-control.app */;
+			productReference = DCC1469B233C56190030B228 /* UE Control.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DCD5C4A4234185C000F4208E /* UEControlIntents */ = {
@@ -677,7 +677,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hedgemereapps.ue-roll-control";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "UE Control";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -697,7 +697,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hedgemereapps.ue-roll-control";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "UE Control";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

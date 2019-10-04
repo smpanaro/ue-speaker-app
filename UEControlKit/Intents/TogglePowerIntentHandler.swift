@@ -16,27 +16,28 @@ public class TogglePowerIntentHandler: NSObject, TogglePowerIntentHandling {
     public func handle(intent: TogglePowerIntent, completion: @escaping (TogglePowerIntentResponse) -> Void) {
         os_log("Handling intent: %@", intent)
         speakerConnection = UESpeakerConnection { [weak self] newState in
-            print("speaker state: \(newState.rawValue) intent state: \(intent.state == .on ? "on" : intent.state == .off ? "off" : "unknown")" )
             if (newState == .on && intent.state == .on) || (newState == .off && intent.state == .off) {
                 DispatchQueue.main.async {
                     completion(TogglePowerIntentResponse.success(state: intent.state))
                 }
             }
             else if (newState == .on && intent.state == .off) {
-                print("Request power off")
+                os_log("Requesting power off")
                 self?.speakerConnection.requestPowerOff()
+                completion(TogglePowerIntentResponse.success(state: intent.state))
             }
             else if (newState == .off && intent.state == .on) {
-                print("Request power on")
+                os_log("Requesting power on")
                 self?.speakerConnection?.requestPowerOn()
+                completion(TogglePowerIntentResponse.success(state: intent.state))
             }
         }
         speakerConnection.connect()
 
         // Set up time out.
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-//            completion(TogglePowerIntentResponse.notFound(state: intent.state))
-//        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+            completion(TogglePowerIntentResponse.notFound(state: intent.state))
+        }
     }
 
     public func resolveState(for intent: TogglePowerIntent, with completion: @escaping (StateResolutionResult) -> Void) {
