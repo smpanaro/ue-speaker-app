@@ -1,4 +1,4 @@
-#  ue-roll-control
+#  UE Speaker App
 
 iOS app for the UE Roll bluetooth speaker that adds Siri Shortcuts support so you can turn your speaker on and off hands-free.
 
